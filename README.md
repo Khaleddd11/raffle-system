@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Kids' Raffle Registration
 
-## Getting Started
+Single-page registration app with sequential raffle IDs, SMS confirmation hook, and a password-protected admin dashboard with search and Excel export.
 
-First, run the development server:
+### Stack
+- Next.js (App Router, TypeScript)
+- Tailwind + shadcn/ui
+- Supabase (Postgres)
+- XLSX for export
 
+### Setup
+1) Requirements  
+- Node 20.x (recommended)  
+- npm  
+
+2) Install deps  
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3) Configure env vars in `env.example` and copy to `.env.local`  
+```
+SUPABASE_URL=
+SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_KEY=
+SMS_API_KEY=
+SMS_API_SECRET=
+SMS_SENDER_NUMBER=
+ADMIN_PASSWORD=
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+4) Create Supabase schema (sequential raffle numbers)  
+Run `supabase/migrations/001_init.sql` in your project database.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+5) Run the app locally  
+```bash
+npm run dev
+```
+Open http://localhost:3000
 
-## Learn More
+6) Ticket preview route  
+After a successful registration you are redirected to `/ticket-preview` with query params carrying the submitted data and raffle number.
 
-To learn more about Next.js, take a look at the following resources:
+### Features
+- Required fields: kid name, date of birth, grade, parent name, parent phone (Egypt formats 011 / 2011 / 114 accepted and normalized).  
+- Inline validation, submit disabled until valid, loading + double-submit guard.
+- Rate limit: max 5 submissions per phone per day (server enforced).
+- Sequential raffle number from Postgres sequence; success screen shows padded ID.
+- SMS hook stub in `src/lib/sms.ts` (replace with real provider, still saves entries on failure).
+- Admin route `/admin` with env password, stats, search, SMS status, Excel export (`raffle_entries_YYYY-MM-DD.xlsx`), phone preserved as text.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
