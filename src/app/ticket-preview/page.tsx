@@ -57,7 +57,7 @@ export default function TicketPreviewPage({ searchParams }: TicketPreviewPagePro
     issuedDate;
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-muted px-4 py-10">
+    <main className="flex min-h-screen items-center justify-center bg-neutral-100 px-4 py-10">
       {hasData ? (
         <div className="flex w-full flex-col items-center gap-4">
           <div className="flex items-center gap-1 text-center text-sm font-medium text-foreground">
