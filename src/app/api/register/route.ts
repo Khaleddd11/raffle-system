@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { randomUUID } from "crypto";
 import { getServiceClient } from "@/lib/supabase";
 import { registrationSchema } from "@/lib/validation";
-import { sendSms } from "@/lib/sms";
 import { makeRequestId } from "@/lib/admin-auth";
 
 export async function POST(request: Request) {
@@ -81,23 +80,39 @@ export async function POST(request: Request) {
     let smsSent = false;
     let smsError: string | undefined;
 
+    const edgeFunctionUrl =
+      process.env.SUPABASE_EDGE_FUNCTION_URL || process.env.NEXT_PUBLIC_SUPABASE_EDGE_FUNCTION_URL;
+
     try {
-      const smsResult = await sendSms({
-        phone: values.parentPhone,
-        message,
-      });
+      if (edgeFunctionUrl) {
+        const edgeResponse = await fetch(`${edgeFunctionUrl}/send-raffle-sms`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            parentPhone: values.parentPhone,
+            parentName: values.parentName,
+            submissionBatchId,
+            children: inserted.map((child) => ({
+              kidName: child.kid_name,
+              raffleNumber: child.raffle_number,
+            })),
+          }),
+        });
 
-      smsSent = smsResult.success;
-      smsError = smsResult.error;
-
-      if (smsResult.success) {
-        await supabase
-          .from("raffle_entries")
-          .update({ sms_sent: true, sms_sent_at: new Date().toISOString() })
-          .in(
-            "id",
-            inserted.map((entry) => entry.id),
-          );
+        if (!edgeResponse.ok) {
+          const errText = await edgeResponse.text();
+          console.error("[sms edge]", requestId, errText);
+          smsError = "SMS failed to send.";
+        } else {
+          smsSent = true;
+          await supabase
+            .from("raffle_entries")
+            .update({ sms_sent: true, sms_sent_at: new Date().toISOString() })
+            .in(
+              "id",
+              inserted.map((entry) => entry.id),
+            );
+        }
       }
     } catch (err) {
       console.error("[sms]", requestId, err);

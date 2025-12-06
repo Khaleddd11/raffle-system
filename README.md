@@ -27,6 +27,13 @@ SMS_API_KEY=
 SMS_API_SECRET=
 SMS_SENDER_NUMBER=
 ADMIN_PASSWORD=
+SUPABASE_EDGE_FUNCTION_URL=  # base URL for Supabase functions (e.g., https://<project>.functions.supabase.co)
+SMS_API_URL=
+SMS_USERNAME=
+SMS_PASSWORD=
+SMS_SENDER=
+SMS_TEMPLATE=
+SMS_ENVIRONMENT=1
 ```
 
 4) Create Supabase schema (sequential raffle numbers)  
@@ -46,6 +53,6 @@ After a successful registration you are redirected to `/ticket-preview` with que
 - Inline validation, submit disabled until valid, loading + double-submit guard.
 - Rate limit: max 5 entries per phone per day (server enforced across children).
 - Sequential raffle number from Postgres sequence; stacked names/numbers on ticket preview.
-- SMS hook stub in `src/lib/sms.ts` (replace with real provider, still saves entries on failure).
+- SMS via Supabase Edge Function `send-raffle-sms` (SMS Misr). If the Edge Function URL env is not set, SMS is skipped but entries are still saved.
 - Admin route `/admin` with env password, stats, search, SMS status, Excel export (`raffle_entries_YYYY-MM-DD.xlsx`), phone preserved as text, includes submission_batch_id.
 
