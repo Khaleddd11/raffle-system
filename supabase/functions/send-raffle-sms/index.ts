@@ -1,3 +1,4 @@
+// @ts-nocheck
 /* eslint-disable */
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
@@ -53,10 +54,11 @@ serve(async (req) => {
       });
     }
 
+    // Build ASCII-only lines to avoid Unicode errors (code 1909).
     const childLines = children
       .map(
         (child) =>
-          `${child.kidName} — Raffle Number: #${child.raffleNumber.toString().padStart(3, "0")}`,
+          `${child.kidName} - Raffle Number: #${child.raffleNumber.toString().padStart(3, "0")}`,
       )
       .join("\n");
 
