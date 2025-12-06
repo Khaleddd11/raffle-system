@@ -36,9 +36,9 @@ export async function POST(request: Request) {
       );
     }
 
-    if ((submissionsToday ?? 0) + values.children.length > 10) {
+    if ((submissionsToday ?? 0) + values.children.length > 50) {
       return NextResponse.json(
-        { error: "Limit reached: 10 submissions per phone per day" },
+        { error: "Limit reached: 50 submissions per phone per day" },
         { status: 429 },
       );
     }

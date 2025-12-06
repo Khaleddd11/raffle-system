@@ -86,7 +86,9 @@ serve(async (req) => {
     });
 
     const responseText = await smsResponse.text();
-    console.log(`[send-raffle-sms] SMS API response: ${responseText}`);
+    console.log(
+      `[send-raffle-sms] SMS API status ${smsResponse.status} response: ${responseText}`,
+    );
 
     if (!smsResponse.ok) {
       return new Response(
@@ -96,8 +98,10 @@ serve(async (req) => {
     }
 
     let success = true;
+    let apiCode: string | undefined;
     try {
       const responseJson = JSON.parse(responseText);
+      apiCode = responseJson.code;
       if (responseJson.code !== "1901") {
         success = false;
       }
@@ -106,10 +110,18 @@ serve(async (req) => {
     }
 
     if (!success) {
-      return new Response(JSON.stringify({ error: "SMS API indicated failure", responseText }), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-        status: 400,
-      });
+      return new Response(
+        JSON.stringify({
+          error: "SMS API indicated failure",
+          status: smsResponse.status,
+          code: apiCode,
+          responseText,
+        }),
+        {
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          status: 400,
+        },
+      );
     }
 
     return new Response(
