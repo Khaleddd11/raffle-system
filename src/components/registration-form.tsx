@@ -279,34 +279,11 @@ export function RegistrationForm({ onSuccess }: RegistrationFormProps) {
                         {...field}
                       />
                     </FormControl>
-                    <FormDescription>
-                      Digits only, 10-11 digits. Formats like 011..., 2011..., or 114... are accepted.
-                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
-              <FormField
-                control={form.control}
-                name="smsConsent"
-                render={({ field }) => (
-                  <FormItem className="flex items-start gap-3 space-y-0 rounded-lg border p-3">
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                    <div className="space-y-1 leading-none">
-                      <FormLabel>SMS notification</FormLabel>
-                      <FormDescription>
-                        I agree to receive an SMS confirmation about this entry.
-                      </FormDescription>
-                    </div>
-                  </FormItem>
-                )}
-              />
             </div>
 
             <div className="text-xs text-muted-foreground">
