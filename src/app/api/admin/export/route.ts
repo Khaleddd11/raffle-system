@@ -41,6 +41,7 @@ export async function GET(request: Request) {
       Grade: entry.grade,
       "Parent Name": entry.parent_name,
       "Parent Phone": entry.parent_phone,
+      "Submission Batch ID": entry.submission_batch_id ?? "",
       "Submitted Date": format(
         new Date(entry.created_at),
         "MM/dd/yyyy",

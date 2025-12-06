@@ -9,5 +9,6 @@ export type RaffleEntry = {
   created_at: string;
   sms_sent: boolean;
   sms_sent_at: string | null;
+  submission_batch_id: string | null;
 };
 

@@ -42,10 +42,10 @@ Open http://localhost:3000
 After a successful registration you are redirected to `/ticket-preview` with query params carrying the submitted data and raffle number.
 
 ### Features
-- Required fields: kid name, date of birth, grade, parent name, parent phone (Egypt formats 011 / 2011 / 114 accepted and normalized).  
+- Multi-child form: add/remove children (kid name, DOB, grade). Parent info entered once.  
 - Inline validation, submit disabled until valid, loading + double-submit guard.
-- Rate limit: max 5 submissions per phone per day (server enforced).
-- Sequential raffle number from Postgres sequence; success screen shows padded ID.
+- Rate limit: max 5 entries per phone per day (server enforced across children).
+- Sequential raffle number from Postgres sequence; stacked names/numbers on ticket preview.
 - SMS hook stub in `src/lib/sms.ts` (replace with real provider, still saves entries on failure).
-- Admin route `/admin` with env password, stats, search, SMS status, Excel export (`raffle_entries_YYYY-MM-DD.xlsx`), phone preserved as text.
+- Admin route `/admin` with env password, stats, search, SMS status, Excel export (`raffle_entries_YYYY-MM-DD.xlsx`), phone preserved as text, includes submission_batch_id.
 

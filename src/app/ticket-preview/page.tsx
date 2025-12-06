@@ -11,17 +11,15 @@ function firstNameOnly(fullName: string) {
 }
 
 export default function TicketPreviewPage({ searchParams }: TicketPreviewPageProps) {
-  const kidName = typeof searchParams.kidName === "string" ? searchParams.kidName : "";
-  const dateOfBirth =
-    typeof searchParams.dateOfBirth === "string" ? searchParams.dateOfBirth : "";
-  const grade = typeof searchParams.grade === "string" ? searchParams.grade : "";
+  const namesParam = typeof searchParams.kidNames === "string" ? searchParams.kidNames : "";
+  const gradesParam = typeof searchParams.grades === "string" ? searchParams.grades : "";
+  const dobsParam = typeof searchParams.dobs === "string" ? searchParams.dobs : "";
+  const numbersParam =
+    typeof searchParams.raffleNumbers === "string" ? searchParams.raffleNumbers : "";
   const parentName =
     typeof searchParams.parentName === "string" ? searchParams.parentName : "";
   const parentPhone =
     typeof searchParams.parentPhone === "string" ? searchParams.parentPhone : "";
-  const raffleNumberParam =
-    typeof searchParams.raffleNumber === "string" ? searchParams.raffleNumber : "";
-  const raffleNumber = raffleNumberParam ? Number(raffleNumberParam) : NaN;
   const issuedAtParam =
     typeof searchParams.issuedAt === "string" ? searchParams.issuedAt : "";
   const issuedDate = issuedAtParam
@@ -40,13 +38,22 @@ export default function TicketPreviewPage({ searchParams }: TicketPreviewPagePro
       })()
     : "";
 
+  const names = namesParam ? namesParam.split("|").map((n) => n.trim()).filter(Boolean) : [];
+  const grades = gradesParam ? gradesParam.split("|") : [];
+  const dobs = dobsParam ? dobsParam.split("|") : [];
+  const numbers = numbersParam ? numbersParam.split("|").map((n) => Number(n)) : [];
+
+  const children = names.map((name, index) => ({
+    kidName: name,
+    grade: grades[index] ?? "",
+    dateOfBirth: dobs[index] ?? "",
+    raffleNumber: numbers[index] ?? NaN,
+  })).filter((child) => child.kidName && !Number.isNaN(child.raffleNumber));
+
   const hasData =
-    kidName &&
-    dateOfBirth &&
-    grade &&
+    children.length > 0 &&
     parentName &&
     parentPhone &&
-    !Number.isNaN(raffleNumber) &&
     issuedDate;
 
   return (
@@ -58,12 +65,9 @@ export default function TicketPreviewPage({ searchParams }: TicketPreviewPagePro
             <Heart className="h-4 w-4 fill-red-500 text-red-500" aria-hidden />
           </div>
           <DigitalTicket
-            kidName={kidName}
-            dateOfBirth={dateOfBirth}
-            grade={grade}
+            ticketChildren={children}
             parentName={parentName}
             parentPhone={parentPhone}
-            raffleNumber={raffleNumber}
             issuedDate={issuedDate}
           />
         </div>

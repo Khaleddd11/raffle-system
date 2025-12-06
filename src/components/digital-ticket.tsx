@@ -4,22 +4,21 @@ import { useCallback, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 
 type DigitalTicketProps = {
-  kidName: string;
-  dateOfBirth: string;
-  grade: string;
+  ticketChildren: Array<{
+    kidName: string;
+    dateOfBirth: string;
+    grade: string;
+    raffleNumber: number;
+  }>;
   parentName: string;
   parentPhone: string;
-  raffleNumber: number;
   issuedDate: string;
 };
 
 export function DigitalTicket({
-  kidName,
-  dateOfBirth,
-  grade,
+  ticketChildren,
   parentName,
   parentPhone,
-  raffleNumber,
   issuedDate,
 }: DigitalTicketProps) {
   const ticketRef = useRef<HTMLDivElement | null>(null);
@@ -61,23 +60,32 @@ export function DigitalTicket({
         >
           <div className="mb-10 flex items-start justify-between text-sm uppercase text-foreground">
             <span className="flex flex-col gap-0.5 leading-[0.9] tracking-[0.01em] text-[22px] font-thin">
-              <span>GESUND</span>
-              <span>KUCHE</span>
+              <span>STRIVE</span>
             </span>
-            <span className="text-[22px] font-thin tracking-tight">
-              #{raffleNumber.toString().padStart(3, "0")}
-            </span>
+            <div className="flex flex-col items-end text-[22px] font-thin tracking-tight leading-tight">
+              {ticketChildren.map((child) => (
+                <span key={child.raffleNumber}>
+                  #{child.raffleNumber.toString().padStart(3, "0")}
+                </span>
+              ))}
+            </div>
           </div>
 
           <div className="space-y-2">
-            <div className="text-3xl font-semibold uppercase leading-tight tracking-tight">
-              {kidName}
-            </div>
-            <div className="text-sm uppercase text-muted-foreground">
-              Grade: {grade}
-            </div>
-            <div className="text-sm text-muted-foreground">
-              Date of Birth: {dateOfBirth}
+            <div className="space-y-3">
+              {ticketChildren.map((child) => (
+                <div key={`${child.kidName}-${child.raffleNumber}`} className="space-y-1">
+                  <div className="text-3xl font-semibold uppercase leading-tight tracking-tight">
+                    {child.kidName}
+                  </div>
+                  <div className="text-sm uppercase text-muted-foreground">
+                    Grade: {child.grade}
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    Date of Birth: {child.dateOfBirth}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 

@@ -259,6 +259,7 @@ export function AdminDashboard() {
                 <TableHead>Grade</TableHead>
                 <TableHead>Parent Name</TableHead>
                 <TableHead>Parent Phone</TableHead>
+                <TableHead>Batch ID</TableHead>
                 <TableHead>Submitted</TableHead>
                 <TableHead>SMS Status</TableHead>
               </TableRow>
@@ -266,7 +267,7 @@ export function AdminDashboard() {
             <TableBody>
               {loading ? (
                 <TableRow>
-                  <TableCell colSpan={7} className="text-center">
+                  <TableCell colSpan={8} className="text-center">
                     <div className="inline-flex items-center gap-2 text-muted-foreground">
                       <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
                       Loading entries...
@@ -275,7 +276,7 @@ export function AdminDashboard() {
                 </TableRow>
               ) : entries.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={7} className="text-center text-sm text-muted-foreground">
+                  <TableCell colSpan={8} className="text-center text-sm text-muted-foreground">
                     No entries found.
                   </TableCell>
                 </TableRow>
@@ -289,6 +290,9 @@ export function AdminDashboard() {
                     <TableCell>{entry.grade}</TableCell>
                     <TableCell>{entry.parent_name}</TableCell>
                     <TableCell>{entry.parent_phone}</TableCell>
+                    <TableCell className="text-xs text-muted-foreground">
+                      {entry.submission_batch_id ?? "—"}
+                    </TableCell>
                     <TableCell>
                       {new Intl.DateTimeFormat("en-US", {
                         month: "short",

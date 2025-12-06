@@ -1,7 +1,8 @@
 type SmsParams = {
   phone: string;
-  kidName: string;
-  raffleNumber: number;
+  kidName?: string;
+  raffleNumber?: number;
+  message?: string;
 };
 
 export type SmsResult = {
@@ -9,7 +10,7 @@ export type SmsResult = {
   error?: string;
 };
 
-export async function sendSms({ phone, kidName, raffleNumber }: SmsParams) {
+export async function sendSms({ phone, kidName, raffleNumber, message }: SmsParams) {
   const sender = process.env.SMS_SENDER_NUMBER;
   const apiKey = process.env.SMS_API_KEY;
   const apiSecret = process.env.SMS_API_SECRET;
@@ -21,14 +22,16 @@ export async function sendSms({ phone, kidName, raffleNumber }: SmsParams) {
     } satisfies SmsResult;
   }
 
-  const message = `Congratulations! ${kidName} is entered in the raffle. Your raffle number is: ${raffleNumber
-    .toString()
-    .padStart(3, "0")}`;
+  const body =
+    message ??
+    `Congratulations! ${kidName ?? "Your child"} is entered in the raffle. Your raffle number is: ${raffleNumber
+      ?.toString()
+      .padStart(3, "0")}`;
 
   // Placeholder: integrate with provider SDK or HTTPS API here.
   // For now, return a mocked success so persistence flow can proceed.
-  console.info("[sms] sending", { to: phone, sender });
-  void message;
+  console.info("[sms] sending", { to: phone, sender, body });
+  void body;
 
   return {
     success: false,
