@@ -56,7 +56,15 @@ export function DigitalTicket({
       <div className="relative w-full max-w-sm">
         <div
           ref={ticketRef}
-          className="relative overflow-hidden rounded-3xl bg-white px-4 pt-4 pb-8 text-foreground shadow-md before:absolute before:top-1/2 before:-left-3 before:h-6 before:w-6 before:-translate-y-1/2 before:rounded-full before:bg-muted after:absolute after:top-1/2 after:-right-3 after:h-6 after:w-6 after:-translate-y-1/2 after:rounded-full after:bg-muted"
+          className="relative overflow-hidden rounded-t-3xl rounded-b-none bg-white px-4 pt-4 pb-10 text-foreground shadow-md before:absolute before:top-1/2 before:-left-3 before:h-6 before:w-6 before:-translate-y-1/2 before:rounded-full before:bg-muted after:absolute after:top-1/2 after:-right-3 after:h-6 after:w-6 after:-translate-y-1/2 after:rounded-full after:bg-muted"
+          style={{
+            maskImage:
+              "radial-gradient(circle at 0% 100%, transparent 12px, black 12px), radial-gradient(circle at 11.11% 100%, transparent 12px, black 12px), radial-gradient(circle at 22.22% 100%, transparent 12px, black 12px), radial-gradient(circle at 33.33% 100%, transparent 12px, black 12px), radial-gradient(circle at 44.44% 100%, transparent 12px, black 12px), radial-gradient(circle at 55.55% 100%, transparent 12px, black 12px), radial-gradient(circle at 66.66% 100%, transparent 12px, black 12px), radial-gradient(circle at 77.77% 100%, transparent 12px, black 12px), radial-gradient(circle at 88.88% 100%, transparent 12px, black 12px), radial-gradient(circle at 100% 100%, transparent 12px, black 12px)",
+            WebkitMaskImage:
+              "radial-gradient(circle at 0% 100%, transparent 12px, black 12px), radial-gradient(circle at 11.11% 100%, transparent 12px, black 12px), radial-gradient(circle at 22.22% 100%, transparent 12px, black 12px), radial-gradient(circle at 33.33% 100%, transparent 12px, black 12px), radial-gradient(circle at 44.44% 100%, transparent 12px, black 12px), radial-gradient(circle at 55.55% 100%, transparent 12px, black 12px), radial-gradient(circle at 66.66% 100%, transparent 12px, black 12px), radial-gradient(circle at 77.77% 100%, transparent 12px, black 12px), radial-gradient(circle at 88.88% 100%, transparent 12px, black 12px), radial-gradient(circle at 100% 100%, transparent 12px, black 12px)",
+            WebkitMaskComposite: "source-in",
+            maskComposite: "intersect",
+          }}
         >
           <div className="mb-10 flex items-start justify-between text-sm uppercase text-foreground">
             <span className="flex flex-col gap-0.5 leading-[0.9] tracking-[0.01em] text-[22px] font-thin">
