@@ -61,7 +61,7 @@ export async function GET(request: Request) {
 
   const filename = `raffle_entries_${format(new Date(), "yyyy-MM-dd")}.xlsx`;
 
-  return new NextResponse(buffer as Buffer, {
+  return new NextResponse(new Uint8Array(buffer), {
     status: 200,
     headers: {
       "Content-Type":
